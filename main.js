@@ -44,4 +44,19 @@
 
   }
   console.log(handA);
+  while (handA.length !== 0 || handA.length !== 52) {
+    var cardA = handA.shift();
+    var cardB = handB.shift();
+    if (cardA.getInt() > cardB.getInt()) {
+      handA.push(cardA);
+      handA.push(cardB);
+    } else if (cardA.getInt() > cardB.getInt()) {
+      handB.push(cardA);
+      handB.push(cardB);
+    } else {
+      //just let handA win for now
+      handA.push(cardA);
+      handA.push(cardA);
+    }
+  }
 })();

@@ -1,0 +1,4 @@
+shift rf
+pop rb
+unshift af
+push  ab

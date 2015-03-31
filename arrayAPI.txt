@@ -1,4 +1,4 @@
-shift rf
-pop rb
-unshift af
-push  ab
+shift remove from front
+pop remove from back
+unshift add to fron
+push  add to back

@@ -1,6 +1,11 @@
+//Simple Card Object
 var Card = function (rank, suit) {
    this.rank = rank;
    this.suit = suit;
+};
+
+Card.prototype.string = function () {
+  return this.rank + this.suit;
 };
 
 Card.prototype.getInt = function () {
@@ -19,7 +24,7 @@ Card.prototype.getInt = function () {
       return this.rank;
   }
 };
-
+//Main Game
 var Game = function () {
   this.handA = [];
   this.handB = [];
@@ -59,11 +64,13 @@ Game.prototype.compareCards = function (cardA, cardB) {
 //are all these array operations too expensive?
 //TODO repeating self too much here
 Game.prototype.handleWar = function (pot) {
+  console.log("WAR");
   var cardA, cardB;
   //if a hand has less than 4 cards grab the last card to settle the war, add the rest to pot
   if (this.handA.length < 4) {
-    cardA = this.handA.pop();
-    pot = pot.concat(handA);
+    cardA = this.handA.shift();
+    pot = pot.concat(this.handA);
+    this.handA = [];
   } else {
     //put the first 3 cards in the pot
     for (var i = 0; i < 3; i++) {
@@ -73,8 +80,9 @@ Game.prototype.handleWar = function (pot) {
   }
 
   if (this.handB.length < 4) {
-    cardB = this.handB.pop();
-    pot = pot.concat(handB);
+    cardB = this.handB.shift();
+    pot = pot.concat(this.handB);
+    this.handB = [];
   } else {
     //put the first 3 cards in the pot
     for (var j = 0; j < 3; j++) {
@@ -82,25 +90,65 @@ Game.prototype.handleWar = function (pot) {
     }
     cardB = this.handB.shift();
   }
-  
+  this.determineWinner(cardA, cardB, pot);
 };
 
-Game.prototype.mainLoop = function () {
-  var cardA = this.handA.shift();
-  var cardB = this.handB.shift();
-  var pot = [cardA, cardB];
+Game.prototype.printState = function(cardA, cardB, pot) {
+
+  console.log("A Length " + this.handA.length);
+  console.log("B Length " + this.handB.length);
+
+  console.log("A " + cardA.string());
+  console.log("B " + cardB.string());
+  var str = "";
+  for (var i = 0; i < pot.length; i++) {
+    str += pot[i].string() + ", ";
+  }
+  console.log("pot " + str);
+
+};
+
+Game.prototype.determineWinner = function (cardA, cardB, pot) {
+  if (!pot) {
+    pot = [cardA, cardB];
+  } else {
+    pot = pot.concat([cardA, cardB]);
+  }
+
+  this.printState(cardA, cardB, pot);
+
   switch (this.compareCards(cardA, cardB)) {
     case 0:
       this.handleWar(pot);
       break;
     case 1:
       this.handA = this.handA.concat(pot);
+      console.log("Hand A wins");
       break;
     case -1:
       this.handB = this.handB.concat(pot);
+      console.log("Hand B wins");
       break; 
+  }
+  if (this.handA.length === 0 || this.handB.length === 0) {
+    return false;
+  } else {
+    return true;
   }
 };
 
+Game.prototype.mainLoop = function () {
+  var cardA = this.handA.shift();
+  var cardB = this.handB.shift();
+
+  return this.determineWinner(cardA, cardB);
+};
+
 var gameInstance = new Game();
+var lock = true;
+while(lock) {
+  lock = gameInstance.mainLoop();
+}
+console.log(gameInstance.handA);
+console.log(gameInstance.handB);
 

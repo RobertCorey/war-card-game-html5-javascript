@@ -56,6 +56,8 @@ Game.prototype.compareCards = function (cardA, cardB) {
   }
 };
 
+//are all these array operations too expensive?
+//TODO repeating self too much here
 Game.prototype.handleWar = function (pot) {
   var cardA, cardB;
   //if a hand has less than 4 cards grab the last card to settle the war, add the rest to pot
@@ -63,12 +65,24 @@ Game.prototype.handleWar = function (pot) {
     cardA = this.handA.pop();
     pot = pot.concat(handA);
   } else {
-
+    //put the first 3 cards in the pot
+    for (var i = 0; i < 3; i++) {
+      pot = pot.concat(this.handA.shift());
+    }
+    cardA = this.handA.shift();
   }
+
   if (this.handB.length < 4) {
     cardB = this.handB.pop();
-  } 
-  //stub
+    pot = pot.concat(handB);
+  } else {
+    //put the first 3 cards in the pot
+    for (var j = 0; j < 3; j++) {
+      pot = pot.concat(this.handB.shift());
+    }
+    cardB = this.handB.shift();
+  }
+  
 };
 
 Game.prototype.mainLoop = function () {

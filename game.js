@@ -57,6 +57,17 @@ Game.prototype.compareCards = function (cardA, cardB) {
 };
 
 Game.prototype.handleWar = function (pot) {
+  var cardA, cardB;
+  //if a hand has less than 4 cards grab the last card to settle the war, add the rest to pot
+  if (this.handA.length < 4) {
+    cardA = this.handA.pop();
+    pot = pot.concat(handA);
+  } else {
+
+  }
+  if (this.handB.length < 4) {
+    cardB = this.handB.pop();
+  } 
   //stub
 };
 

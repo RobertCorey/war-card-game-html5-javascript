@@ -57,9 +57,7 @@ Game.prototype.compareCards = function (cardA, cardB) {
 };
 
 Game.prototype.handleWar = function (pot) {
-  var cardA = this.handA.shift();
-  var cardB = this.handB.shift();
-
+  //stub
 };
 
 Game.prototype.mainLoop = function () {
